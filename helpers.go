@@ -30,11 +30,23 @@ func sortedProperties(s *Config) []propertyEntry {
 
 // scalarUnionVariants returns the anyOf or oneOf variants for a scalar union,
 // preferring anyOf. Returns nil if neither is set.
+//
+// A single-branch anyOf/oneOf is the OpenAPI idiom for attaching nullable or a
+// description to a $ref (e.g. `{"anyOf":[{"$ref":...}],"nullable":true}`); it
+// is a passthrough, not a union. When that single branch is itself a scalar
+// union, its variants are surfaced so the union is preserved rather than
+// collapsed to its first branch by FlattenComposite.
 func scalarUnionVariants(s *Config) []*Config {
-	if len(s.AnyOf) > 0 {
-		return s.AnyOf
+	variants := s.AnyOf
+	if len(variants) == 0 {
+		variants = s.OneOf
 	}
-	return s.OneOf
+	if len(variants) == 1 {
+		if inner := scalarUnionVariants(variants[0]); len(inner) > 1 {
+			return inner
+		}
+	}
+	return variants
 }
 
 // splitIdentifier splits a string on '-', '_', and '.' delimiters.

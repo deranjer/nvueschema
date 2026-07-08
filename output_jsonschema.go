@@ -174,6 +174,24 @@ func scalarUnionToJSONSchema(s *Config) map[string]any {
 		if len(v.Enum) > 0 {
 			branch["enum"] = v.Enum
 		}
+		// Carry each branch's scalar constraints so a union like
+		// integer(0-255) | string(enum) stays faithful rather than degrading
+		// to bare types.
+		if v.Minimum != nil {
+			branch["minimum"] = *v.Minimum
+		}
+		if v.Maximum != nil {
+			branch["maximum"] = *v.Maximum
+		}
+		if v.MinLength != nil {
+			branch["minLength"] = *v.MinLength
+		}
+		if v.MaxLength != nil {
+			branch["maxLength"] = *v.MaxLength
+		}
+		if v.Pattern != "" {
+			branch["pattern"] = v.Pattern
+		}
 		schemas = append(schemas, branch)
 	}
 
