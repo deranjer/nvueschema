@@ -209,29 +209,30 @@ func formatToJSONSchemaDef(format string) string {
 }
 
 var jsonSchemaDefTypes = map[formatKey]string{
-	fmtIPv4Addr:          "ipv4-address",
-	fmtIPv6Addr:          "ipv6-address",
-	fmtIPAddr:            "ip-address",
-	fmtIPv4Prefix:        "ipv4-prefix",
-	fmtIPv6Prefix:        "ipv6-prefix",
-	fmtMAC:               "mac-address",
-	fmtInterfaceName:     "interface-name",
-	fmtVrfName:           "vrf-name",
-	fmtVlanRange:         "vlan-range",
-	fmtPortRange:         "port-range",
+	fmtIPv4Addr:           "ipv4-address",
+	fmtIPv6Addr:           "ipv6-address",
+	fmtIPAddr:             "ip-address",
+	fmtIPv4Prefix:         "ipv4-prefix",
+	fmtIPv6Prefix:         "ipv6-prefix",
+	fmtMAC:                "mac-address",
+	fmtInterfaceName:      "interface-name",
+	fmtVrfName:            "vrf-name",
+	fmtVlanRange:          "vlan-range",
+	fmtPortRange:          "port-range",
 	fmtRouteDistinguisher: "route-distinguisher",
-	fmtRouteTarget:       "route-target",
-	fmtExtCommunity:      "ext-community",
-	fmtBgpCommunity:      "bgp-community",
-	fmtEvpnRoute:         "evpn-route",
-	fmtAsnRange:          "asn-range",
-	fmtEsIdentifier:      "es-identifier",
-	fmtSegmentIdentifier: "segment-identifier",
-	fmtBgpRegex:          "bgp-regex",
-	fmtHostname:          "hostname",
-	fmtUserName:          "user-name",
-	fmtSnmpOid:           "snmp-oid",
-	fmtSecretString:      "secret-string",
+	fmtRouteTarget:        "route-target",
+	fmtExtCommunity:       "ext-community",
+	fmtBgpCommunity:       "bgp-community",
+	fmtEvpnRoute:          "evpn-route",
+	fmtAsnRange:           "asn-range",
+	fmtEsIdentifier:       "es-identifier",
+	fmtSegmentIdentifier:  "segment-identifier",
+	fmtBgpRegex:           "bgp-regex",
+	fmtHostname:           "hostname",
+	fmtUserName:           "user-name",
+	fmtSnmpOid:            "snmp-oid",
+	fmtSecretString:       "secret-string",
+	fmtKeyString:          "key-string",
 }
 
 // formatDefs returns the $defs block with pattern-validated format types.
@@ -331,6 +332,9 @@ func formatDefs() map[string]any {
 		"secret-string": map[string]any{
 			"type":      "string",
 			"maxLength": 64,
+		},
+		"key-string": map[string]any{
+			"type": "string",
 		},
 	}
 	return defs

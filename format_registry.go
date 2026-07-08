@@ -27,6 +27,7 @@ const (
 	fmtUserName
 	fmtSnmpOid
 	fmtSecretString
+	fmtKeyString
 	fmtInteger
 	fmtFloat
 	fmtDateTime
@@ -67,35 +68,40 @@ var formatToKey = map[string]formatKey{
 	"aggregate-ipv6-prefix": fmtIPv6Prefix,
 
 	// Network identifiers
-	"mac":              fmtMAC,
-	"interface-name":   fmtInterfaceName, "swp-name": fmtInterfaceName,
-	"bond-swp-name":    fmtInterfaceName, "transceiver-name": fmtInterfaceName,
-	"bridge-name":      fmtInterfaceName,
-	"vrf-name":         fmtVrfName,
-	"vlan-range":       fmtVlanRange,
-	"ip-port-range":    fmtPortRange,
+	"mac":            fmtMAC,
+	"interface-name": fmtInterfaceName, "swp-name": fmtInterfaceName,
+	"bond-swp-name": fmtInterfaceName, "transceiver-name": fmtInterfaceName,
+	"bridge-name":         fmtInterfaceName,
+	"vrf-name":            fmtVrfName,
+	"vlan-range":          fmtVlanRange,
+	"ip-port-range":       fmtPortRange,
 	"route-distinguisher": fmtRouteDistinguisher,
-	"route-target":     fmtRouteTarget, "route-target-any": fmtRouteTarget,
-	"ext-community":    fmtExtCommunity,
-	"community":        fmtBgpCommunity, "well-known-community": fmtBgpCommunity,
-	"large-community":  fmtBgpCommunity,
-	"evpn-route":       fmtEvpnRoute,
-	"bgp-regex":        fmtBgpRegex,
-	"asn-range":        fmtAsnRange,
-	"es-identifier":    fmtEsIdentifier,
+	"route-target":        fmtRouteTarget, "route-target-any": fmtRouteTarget,
+	"ext-community": fmtExtCommunity,
+	"community":     fmtBgpCommunity, "well-known-community": fmtBgpCommunity,
+	"large-community":    fmtBgpCommunity,
+	"evpn-route":         fmtEvpnRoute,
+	"bgp-regex":          fmtBgpRegex,
+	"asn-range":          fmtAsnRange,
+	"es-identifier":      fmtEsIdentifier,
 	"segment-identifier": fmtSegmentIdentifier,
 
 	// Names and identifiers
 	"idn-hostname": fmtHostname, "domain-name": fmtHostname,
-	"user-name":    fmtUserName,
-	"snmp-branch":  fmtSnmpOid, "oid": fmtSnmpOid,
+	"user-name":   fmtUserName,
+	"snmp-branch": fmtSnmpOid, "oid": fmtSnmpOid,
 
 	// Secrets
-	"secret-string": fmtSecretString, "key-string": fmtSecretString,
+	"secret-string": fmtSecretString,
+
+	// SSH public keys. Not a secret and not length-bounded (an ed25519 key
+	// is 68 base64 chars, longer than secret-string's 64-char cap), so it maps
+	// to its own unbounded string format rather than aliasing secret-string.
+	"key-string": fmtKeyString,
 
 	// Numeric types (encoded as string)
 	"integer": fmtInteger, "integer-id": fmtInteger,
-	"float":   fmtFloat, "number": fmtFloat,
+	"float": fmtFloat, "number": fmtFloat,
 
 	// Temporal
 	"date-time":  fmtDateTime,
@@ -108,11 +114,11 @@ var formatToKey = map[string]formatKey{
 	"file-name":    fmtFileName,
 	"repo-url":     fmtRepoURL, "remote-url-fetch": fmtRepoURL,
 	"remote-url-upload": fmtRepoURL,
-	"repo-dist": fmtRepoDist, "repo-pool": fmtRepoDist,
+	"repo-dist":         fmtRepoDist, "repo-pool": fmtRepoDist,
 	"json-pointer": fmtJSONPointer,
-	"clock-id": fmtClockID, "ptp-port-id": fmtClockID,
+	"clock-id":     fmtClockID, "ptp-port-id": fmtClockID,
 	"sequence-id": fmtSequenceID,
-	"command": fmtCommand, "command-path": fmtCommand,
+	"command":     fmtCommand, "command-path": fmtCommand,
 	"interval": fmtInterval, "rate-limit": fmtInterval,
 	"mss-format": fmtInterval, "string": fmtInterval,
 }
