@@ -46,11 +46,8 @@ func scalarUnionVariants(s *Config) []*Config {
 	if len(variants) == 0 {
 		variants = s.OneOf
 	}
-	if len(variants) == 0 {
-		return nil
-	}
 
-	expanded := make([]*Config, 0, len(variants))
+	var expanded []*Config
 	for _, variant := range variants {
 		if inner := scalarUnionVariants(variant); len(inner) > 0 {
 			expanded = append(expanded, inner...)
